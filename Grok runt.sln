@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grok runt", "Grok runt\Grok runt.csproj", "{A2CA35FA-C048-4FA4-AB01-7FA089FE3528}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2CA35FA-C048-4FA4-AB01-7FA089FE3528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2CA35FA-C048-4FA4-AB01-7FA089FE3528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2CA35FA-C048-4FA4-AB01-7FA089FE3528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2CA35FA-C048-4FA4-AB01-7FA089FE3528}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5807CAB-02B7-42DB-91EE-3AADF209BFB1}
+	EndGlobalSection
+EndGlobal
