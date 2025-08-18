@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
@@ -19,6 +20,7 @@ namespace SFO_Class_Divided
             DeleteDuplicates,
             EncryptFiles,
             DecryptFiles,
+            CategorizeFiles,
             Exit
         }
         public static void ShowMenu()
@@ -77,6 +79,12 @@ namespace SFO_Class_Divided
                             string decryptPassword = Console.ReadLine();
                             decryptionManager.DecryptSensitiveFiles(mainDirectory, decryptPassword);
                         break;
+                        case menu.CategorizeFiles:
+                            Console.Clear();
+                            Console.WriteLine("You selected Categorize Files");
+                            CategorizeFiles(mainDirectory);
+                            Console.WriteLine("Files have been categorized.");
+                        break;
 
                         case menu.Exit:
                             Console.WriteLine("Goodbye");
@@ -114,7 +122,7 @@ namespace SFO_Class_Divided
                 };
 
                 // Start file system watcher in a separate thread
-                threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp\\Watched" +""));
+                threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp\\Watched"));
 
                 Console.WriteLine("Logs written to log.txt");
 
@@ -130,6 +138,61 @@ namespace SFO_Class_Divided
             {
                 Logger logger = new Logger("Log.txt");
                 logger.Log($"Unexpected error: {ex.Message}");
+            }
+        }
+        //categorize files based on their extensions
+        public static void CategorizeFiles(string sourceDirectory)
+        {
+            var categories = new Dictionary<string, string>
+            {
+                { ".txt", "TextFiles" },
+                { ".jpg", "Images" },
+                { ".png", "Images" },
+                { ".docx", "Documents" },
+                { ".pdf", "Documents" }
+                // Add more as needed
+            };
+
+            var files = Directory.GetFiles(sourceDirectory);
+            Console.WriteLine($"Found {files.Length} file(s) in {sourceDirectory}:");
+            foreach (var file in files)
+            {
+                Console.WriteLine($"- {file} (Extension: {Path.GetExtension(file).ToLower()})");
+            }
+
+            int movedCount = 0;
+            foreach (var file in files)
+            {
+                string extension = Path.GetExtension(file).ToLower();
+                if (categories.TryGetValue(extension, out string folderName))
+                {
+                    string targetFolder = Path.Combine(sourceDirectory, folderName);
+                    Directory.CreateDirectory(targetFolder);
+
+                    string targetPath = Path.Combine(targetFolder, Path.GetFileName(file));
+                    try
+                    {
+                        File.Move(file, targetPath);
+                        movedCount++;
+                        Console.WriteLine($"Moved: {file} -> {targetPath}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error moving {file}: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Skipped: {file} (No category for extension '{extension}')");
+                }
+            }
+            if (movedCount == 0)
+            {
+                Console.WriteLine("No files were categorized. Check file extensions and directory contents.");
+            }
+            else
+            {
+                Console.WriteLine($"{movedCount} file(s) categorized.");
             }
         }
     }
