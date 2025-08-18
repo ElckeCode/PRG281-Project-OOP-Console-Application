@@ -27,8 +27,10 @@ namespace SFO_Class_Divided
             try
             {
                 if (!Directory.Exists(directory))
-                    throw new DirectoryNotFoundException("Directory not found.");
-
+                {
+                    Directory.CreateDirectory(directory);
+                    Console.WriteLine($"Directory not found. Created new directory: {directory}");
+                }
                 watcher.Path = directory;
                 watcher.EnableRaisingEvents = true;
                 watcher.Created += OnFileCreated;
