@@ -18,7 +18,7 @@ namespace SFO_Class_Divided
         {
             try
             {
-                Logger logger = new Logger();
+                Logger logger = new Logger("Log.txt");
                 ThreadManager threadManager = new ThreadManager();
                 EncryptionManager encryptionManager = new EncryptionManager();
                 CategoryFileProcessor fileProcessor = new CategoryFileProcessor();
@@ -28,7 +28,7 @@ namespace SFO_Class_Divided
                 // Subscribe to watcher events
                 watcherService.FileProcessedEvent += (sender, e) =>
                 {
-                    logger.LogInfo($"File processed: {e.FilePath} at {e.Timestamp}");
+                    logger.Log($"File processed: {e.FilePath} at {e.Timestamp}");
                 };
 
                 // Start file system watcher in a separate thread
@@ -38,19 +38,24 @@ namespace SFO_Class_Divided
                 //string sampleFile = "C:\\Temp\\sample.txt";
                 //fileProcessor.ProcessFile(sampleFile);
                 duplicateManager.CheckDuplicates("C:\\Temp");
+                logger.Log("Application started");
+                logger.Log("User selected option 1");
+                logger.Log("Application closed");
+
+                Console.WriteLine("Logs written to log.txt");
 
                 Console.WriteLine("Application running. Press any key to exit.");
                 Console.ReadKey();
             }
             catch (SensitiveFileException ex)
             {
-                Logger logger = new Logger();
-                logger.LogError($"Sensitive file error: {ex.Message}");
+                Logger logger = new Logger("Log.txt");
+                logger.Log($"Sensitive file error: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Logger logger = new Logger();
-                logger.LogError($"Unexpected error: {ex.Message}");
+                Logger logger = new Logger("Log.txt");
+                logger.Log($"Unexpected error: {ex.Message}");
             }
         }
     }
