@@ -10,11 +10,9 @@ using System.Xml.Serialization;
 
 namespace SFO_Class_Divided
 {
-    // Main program
     class Program
     {
-        // Enum for menu options
-        public enum menu
+        public enum Menu
         {
             StartWatching = 1,
             DeleteDuplicates,
@@ -25,7 +23,7 @@ namespace SFO_Class_Divided
         }
         public static void ShowMenu()
         {
-            foreach (menu option in Enum.GetValues(typeof(menu)))
+            foreach (Menu option in Enum.GetValues(typeof(Menu)))
             {
                 Console.WriteLine($"{(int)option}. {option}");
             }
@@ -33,37 +31,32 @@ namespace SFO_Class_Divided
         static void Main(string[] args)
         {
             Console.WriteLine("Starting SFO_Class_Divided Application...");
-            // bool for while statement
             bool running = true;
-            //Making the main directory for the application
             string mainDirectory = "C:\\Temp\\Watched";
-            //While loop to keep the application running
             while (running)
             {
-                // Display the menu
                 ShowMenu();
-                // Check if the user wants to exit
                 Console.WriteLine("Please select an option:");
                 if (int.TryParse(Console.ReadLine(), out int choice)
-                    && Enum.IsDefined(typeof(menu), choice))
+                    && Enum.IsDefined(typeof(Menu), choice))
                 {
-                    menu selected = (menu)choice;
+                    Menu selected = (Menu)choice;
                     switch (selected)
                     {
-                        case menu.StartWatching:
+                        case Menu.StartWatching:
                             Console.Clear();
                             Console.WriteLine("You selected Start Watching");
                             RunApp();
                         break;
 
-                        case menu.DeleteDuplicates:
+                        case Menu.DeleteDuplicates:
                             Console.Clear();
                             Console.WriteLine("You selected Delete Duplicates");
                             DuplicateManager duplicateManager = new DuplicateManager();
                             duplicateManager.DeleteDuplicates(duplicateManager.CheckDuplicates(mainDirectory));
                         break;
 
-                        case menu.EncryptFiles:
+                        case Menu.EncryptFiles:
                             Console.Clear();
                             EncryptionManager encryptionManager = new EncryptionManager();
                             Console.WriteLine("You selected Encrypt Files");
@@ -71,7 +64,7 @@ namespace SFO_Class_Divided
                             string password = Console.ReadLine();
                             encryptionManager.EncryptSensitiveFiles(mainDirectory, password);
                         break;
-                        case menu.DecryptFiles:
+                        case Menu.DecryptFiles:
                             Console.Clear();
                             EncryptionManager decryptionManager = new EncryptionManager();
                             Console.WriteLine("You selected Decrypt Files");
@@ -79,14 +72,14 @@ namespace SFO_Class_Divided
                             string decryptPassword = Console.ReadLine();
                             decryptionManager.DecryptSensitiveFiles(mainDirectory, decryptPassword);
                         break;
-                        case menu.CategorizeFiles:
+                        case Menu.CategorizeFiles:
                             Console.Clear();
                             Console.WriteLine("You selected Categorize Files");
                             CategorizeFiles(mainDirectory);
                             Console.WriteLine("Files have been categorized.");
                         break;
 
-                        case menu.Exit:
+                        case Menu.Exit:
                             Console.WriteLine("Goodbye");
                             running = false;
                         break;
@@ -96,14 +89,8 @@ namespace SFO_Class_Divided
                 {
                     Console.WriteLine("Invalid input, please try again.");
                 }
-                
             }
-
         }
-        
-    
-
-
 
         static void RunApp()
         {
@@ -111,21 +98,17 @@ namespace SFO_Class_Divided
             {
                 Logger logger = new Logger("Log.txt");
                 ThreadManager threadManager = new ThreadManager();
-                
                 CategoryFileProcessor fileProcessor = new CategoryFileProcessor();
                 WatcherService watcherService = new WatcherService();
 
-                // Subscribe to watcher events
                 watcherService.FileProcessedEvent += (sender, e) =>
                 {
                     logger.Log($"File processed: {e.FilePath} at {e.Timestamp}");
                 };
 
-                // Start file system watcher in a separate thread
                 threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp\\Watched"));
 
                 Console.WriteLine("Logs written to log.txt");
-
                 Console.WriteLine("Application running. Press any key to exit.");
                 Console.ReadKey();
             }
@@ -140,7 +123,7 @@ namespace SFO_Class_Divided
                 logger.Log($"Unexpected error: {ex.Message}");
             }
         }
-        //categorize files based on their extensions
+
         public static void CategorizeFiles(string sourceDirectory)
         {
             var categories = new Dictionary<string, string>
@@ -150,7 +133,6 @@ namespace SFO_Class_Divided
                 { ".png", "Images" },
                 { ".docx", "Documents" },
                 { ".pdf", "Documents" }
-                // Add more as needed
             };
 
             var files = Directory.GetFiles(sourceDirectory);

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace SFO_Class_Divided
 
 {
-    // Handles logging
     class Logger
     {
         private readonly string logFilePath;
@@ -17,16 +16,16 @@ namespace SFO_Class_Divided
         {
             string directory = @"C:\Temp\Logs";
 
-            // Make sure the directory exists
+           
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
 
-            // Full file path
+           
             logFilePath = Path.Combine(directory, fileName);
 
-            // Create the file if it doesn't exist
+            
             if (!File.Exists(logFilePath))
             {
                 using (StreamWriter sw = File.CreateText(logFilePath))

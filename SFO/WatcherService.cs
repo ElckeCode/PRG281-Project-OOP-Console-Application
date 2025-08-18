@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace SFO_Class_Divided
 
 {
-    // Monitors file system changes
     public class WatcherService
     {
         private FileSystemWatcher watcher;

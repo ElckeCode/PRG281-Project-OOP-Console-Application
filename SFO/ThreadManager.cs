@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace SFO_Class_Divided
 
 {
-    // Manages threads for monitoring
     public class ThreadManager
     {
         public void StartThread(Action task)
@@ -32,7 +31,7 @@ namespace SFO_Class_Divided
             {
                 if (thread != null && thread.IsAlive)
                 {
-                    thread.Abort(); // Note: Thread.Abort is deprecated in .NET 5+, consider alternatives
+                    thread.Abort(); 
                     Console.WriteLine("Thread stopped.");
                 }
             }

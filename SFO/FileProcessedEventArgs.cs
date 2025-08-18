@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace SFO_Class_Divided
 
 {
-    // Custom event arguments for file events
     public class FileProcessedEventArgs : EventArgs
     {
         private string filePath;

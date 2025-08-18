@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace SFO_Class_Divided
 
 {
-    // Processes and categorizes files
     public class CategoryFileProcessor : FileHandler, IFileProcessor
     {
         public void ProcessFile(string filePath)
@@ -29,7 +28,6 @@ namespace SFO_Class_Divided
 
         public string CategorizeFile(string filePath)
         {
-            // Placeholder: Implement categorization logic (e.g., based on extension)
             string extension = Path.GetExtension(filePath)?.ToLower();
             if (extension == ".txt")
                 return "Text";

@@ -8,7 +8,6 @@ namespace SFO_Class_Divided
 {
     public class DuplicateManager : FileHandler
     {
-        // Returns a dictionary of duplicate files (hash -> list of files)
         public Dictionary<string, List<string>> CheckDuplicates(string directory)
         {
             if (!Directory.Exists(directory))
@@ -45,7 +44,6 @@ namespace SFO_Class_Divided
             return duplicates;
         }
 
-        // Deletes duplicates, keeping the first file of each group
         public void DeleteDuplicates(Dictionary<string, List<string>> duplicates)
         {
             foreach (var group in duplicates)
@@ -58,7 +56,7 @@ namespace SFO_Class_Divided
                     string duplicateFile = group.Value[i];
                     try
                     {
-                        filePath = duplicateFile; // from FileHandler
+                        filePath = duplicateFile; 
                         DeleteFile();
                         Console.WriteLine($"Deleted: {duplicateFile}");
                     }
