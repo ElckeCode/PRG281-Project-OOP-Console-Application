@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grok_runt
+namespace SFO_Class_Divided
+
 {
     // Custom event arguments for file events
     public class FileProcessedEventArgs : EventArgs

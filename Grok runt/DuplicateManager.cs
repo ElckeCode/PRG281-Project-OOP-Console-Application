@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grok_runt
+namespace SFO_Class_Divided
 {
     // Handles duplicate detection and deletion
     public class DuplicateManager : FileHandler

@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Grok_runt
+namespace SFO_Class_Divided
+
 {
     // Manages threads for monitoring
     public class ThreadManager

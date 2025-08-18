@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SFO_Class_Divided
-
 {
-    // Interface for file processors
-    public interface IFileProcessor
+    public interface IRule
     {
         void ProcessFile(string filePath);
     }
