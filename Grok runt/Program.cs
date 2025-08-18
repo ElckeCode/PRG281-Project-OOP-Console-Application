@@ -35,8 +35,8 @@ namespace SFO_Class_Divided
                 threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp"));
 
                 // Example: Process a file
-                string sampleFile = "C:\\Temp\\sample.txt";
-                fileProcessor.ProcessFile(sampleFile);
+                //string sampleFile = "C:\\Temp\\sample.txt";
+                //fileProcessor.ProcessFile(sampleFile);
                 duplicateManager.CheckDuplicates("C:\\Temp");
 
                 Console.WriteLine("Application running. Press any key to exit.");
