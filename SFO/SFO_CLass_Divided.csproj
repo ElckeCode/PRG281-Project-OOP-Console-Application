@@ -64,7 +64,6 @@
     <Compile Include="FileHandler.cs" />
     <Compile Include="FileProcessedEventArgs.cs" />
     <Compile Include="IFileProcessor.cs" />
-    <Compile Include="IRule.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

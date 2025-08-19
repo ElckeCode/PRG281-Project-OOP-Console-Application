@@ -46,8 +46,19 @@ namespace SFO_Class_Divided
                         case Menu.StartWatching:
                             Console.Clear();
                             Console.WriteLine("You selected Start Watching");
-                            RunApp();
-                        break;
+                            Logger logger = new Logger("Log.txt");
+                            ThreadManager threadManager = new ThreadManager();
+                            WatcherService watcherService = new WatcherService();
+                            watcherService.FileProcessedEvent += (sender, e) =>
+                            {
+                                logger.Log($"File processed: {e.FilePath} at {e.Timestamp}");
+                            };
+
+                            threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp\\Watched"));
+
+                            Console.WriteLine("Logs written to log.txt");
+                            Console.WriteLine("Application running. Press any key to exit.");
+                            break;
 
                         case Menu.DeleteDuplicates:
                             Console.Clear();
@@ -75,9 +86,16 @@ namespace SFO_Class_Divided
                         case Menu.CategorizeFiles:
                             Console.Clear();
                             Console.WriteLine("You selected Categorize Files");
-                            CategorizeFiles(mainDirectory);
+                            CategoryFileProcessor categoryFileProcessor = new CategoryFileProcessor();
+
+                            foreach (var file in Directory.GetFiles(mainDirectory))
+                            {
+                                categoryFileProcessor.ProcessFile(file);
+                            }
+
                             Console.WriteLine("Files have been categorized.");
-                        break;
+                            break;
+
 
                         case Menu.Exit:
                             Console.WriteLine("Goodbye");
@@ -89,92 +107,6 @@ namespace SFO_Class_Divided
                 {
                     Console.WriteLine("Invalid input, please try again.");
                 }
-            }
-        }
-
-        static void RunApp()
-        {
-            try
-            {
-                Logger logger = new Logger("Log.txt");
-                ThreadManager threadManager = new ThreadManager();
-                CategoryFileProcessor fileProcessor = new CategoryFileProcessor();
-                WatcherService watcherService = new WatcherService();
-
-                watcherService.FileProcessedEvent += (sender, e) =>
-                {
-                    logger.Log($"File processed: {e.FilePath} at {e.Timestamp}");
-                };
-
-                threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp\\Watched"));
-
-                Console.WriteLine("Logs written to log.txt");
-                Console.WriteLine("Application running. Press any key to exit.");
-                Console.ReadKey();
-            }
-            catch (SensitiveFileException ex)
-            {
-                Logger logger = new Logger("Log.txt");
-                logger.Log($"Sensitive file error: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Logger logger = new Logger("Log.txt");
-                logger.Log($"Unexpected error: {ex.Message}");
-            }
-        }
-
-        public static void CategorizeFiles(string sourceDirectory)
-        {
-            var categories = new Dictionary<string, string>
-            {
-                { ".txt", "TextFiles" },
-                { ".jpg", "Images" },
-                { ".png", "Images" },
-                { ".docx", "Documents" },
-                { ".pdf", "Documents" }
-            };
-
-            var files = Directory.GetFiles(sourceDirectory);
-            Console.WriteLine($"Found {files.Length} file(s) in {sourceDirectory}:");
-            foreach (var file in files)
-            {
-                Console.WriteLine($"- {file} (Extension: {Path.GetExtension(file).ToLower()})");
-            }
-
-            int movedCount = 0;
-            foreach (var file in files)
-            {
-                string extension = Path.GetExtension(file).ToLower();
-                if (categories.TryGetValue(extension, out string folderName))
-                {
-                    string targetFolder = Path.Combine(sourceDirectory, folderName);
-                    Directory.CreateDirectory(targetFolder);
-
-                    string targetPath = Path.Combine(targetFolder, Path.GetFileName(file));
-                    try
-                    {
-                        File.Move(file, targetPath);
-                        movedCount++;
-                        Console.WriteLine($"Moved: {file} -> {targetPath}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error moving {file}: {ex.Message}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Skipped: {file} (No category for extension '{extension}')");
-                }
-            }
-            if (movedCount == 0)
-            {
-                Console.WriteLine("No files were categorized. Check file extensions and directory contents.");
-            }
-            else
-            {
-                Console.WriteLine($"{movedCount} file(s) categorized.");
             }
         }
     }
