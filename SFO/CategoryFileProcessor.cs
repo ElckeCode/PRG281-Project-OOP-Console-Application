@@ -5,7 +5,6 @@ namespace SFO_Class_Divided
 {
     public class CategoryFileProcessor : FileHandler, IFileProcessor
     {
-        // This matches IFileProcessor interface
         public void ProcessFile(string filePath)
         {
             try
@@ -19,8 +18,6 @@ namespace SFO_Class_Divided
                 Console.WriteLine($"Error processing {filePath}: {ex.Message}");
             }
         }
-
-        // Helper for categorization
         private string CategorizeFile(string filePath)
         {
             string extension = Path.GetExtension(filePath)?.ToLower();
@@ -34,8 +31,6 @@ namespace SFO_Class_Divided
             else
                 return "Other";
         }
-
-        // Helper for moving
         private void MoveToCategory(string filePath, string category)
         {
             string destinationDir = Path.Combine(Path.GetDirectoryName(filePath), category);
@@ -43,7 +38,6 @@ namespace SFO_Class_Divided
 
             string destinationPath = Path.Combine(destinationDir, Path.GetFileName(filePath));
 
-            // Prevent overwriting files
             if (!File.Exists(destinationPath))
             {
                 File.Move(filePath, destinationPath);

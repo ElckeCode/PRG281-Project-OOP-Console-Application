@@ -9,8 +9,10 @@ namespace SFO_Class_Divided
 {
     public class SensitiveFileException : Exception
     {
-        public SensitiveFileException(string message) : base(message)
+        public SensitiveFileException(string message)
+            : base(message)
         {
         }
+
     }
 }

@@ -10,14 +10,15 @@ namespace SFO_Class_Divided
 {
     public class ThreadManager
     {
-        public void StartThread(Action task)
+        public Thread StartThread(Action task)
         {
             try
             {
                 Thread thread = new Thread(() => task());
                 thread.IsBackground = true;
                 thread.Start();
-                Console.WriteLine("Thread started.");
+                return thread;
+
             }
             catch (Exception ex)
             {

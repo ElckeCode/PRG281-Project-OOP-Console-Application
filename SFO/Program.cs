@@ -15,6 +15,7 @@ namespace SFO_Class_Divided
         public enum Menu
         {
             StartWatching = 1,
+            StopWatching,
             DeleteDuplicates,
             EncryptFiles,
             DecryptFiles,
@@ -33,6 +34,14 @@ namespace SFO_Class_Divided
             Console.WriteLine("Starting SFO_Class_Divided Application...");
             bool running = true;
             string mainDirectory = "C:\\Temp\\Watched";
+            Logger logger = new Logger("Log.txt");
+            ThreadManager threadManager = new ThreadManager();
+            WatcherService watcherService = new WatcherService();
+            Thread watcherThread = null;
+            DuplicateManager duplicateManager = new DuplicateManager();
+            EncryptionManager encryptionManager = new EncryptionManager();
+            EncryptionManager decryptionManager = new EncryptionManager();
+            CategoryFileProcessor categoryFileProcessor = new CategoryFileProcessor();
             while (running)
             {
                 ShowMenu();
@@ -46,56 +55,71 @@ namespace SFO_Class_Divided
                         case Menu.StartWatching:
                             Console.Clear();
                             Console.WriteLine("You selected Start Watching");
-                            Logger logger = new Logger("Log.txt");
-                            ThreadManager threadManager = new ThreadManager();
-                            WatcherService watcherService = new WatcherService();
                             watcherService.FileProcessedEvent += (sender, e) =>
                             {
                                 logger.Log($"File processed: {e.FilePath} at {e.Timestamp}");
                             };
+                            watcherThread = threadManager.StartThread(() =>
+                            {
+                                watcherService.StartWatching("C:\\Temp\\Watched");
+                                Thread.Sleep(Timeout.Infinite);
+                            });
+                            if (watcherThread.IsAlive == true)
+                            {
+                                Console.WriteLine("Watcher thread is running.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Watcher thread failed to start.");
+                            }
+                            break;
 
-                            threadManager.StartThread(() => watcherService.StartWatching("C:\\Temp\\Watched"));
-
-                            Console.WriteLine("Logs written to log.txt");
-                            Console.WriteLine("Application running. Press any key to exit.");
+                        case Menu.StopWatching:
+                            Console.Clear();
+                            Console.WriteLine("You selected Stop Watching");
+                            threadManager.StopThread(watcherThread);
+                            if (watcherThread.IsAlive == false)
+                            {
+                                Console.WriteLine("Watcher thread has been stopped.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Watcher thread is still running.");
+                            }
                             break;
 
                         case Menu.DeleteDuplicates:
                             Console.Clear();
                             Console.WriteLine("You selected Delete Duplicates");
-                            DuplicateManager duplicateManager = new DuplicateManager();
                             duplicateManager.DeleteDuplicates(duplicateManager.CheckDuplicates(mainDirectory));
                         break;
 
                         case Menu.EncryptFiles:
                             Console.Clear();
-                            EncryptionManager encryptionManager = new EncryptionManager();
                             Console.WriteLine("You selected Encrypt Files");
                             Console.WriteLine("Please give me a password for encryption:");
                             string password = Console.ReadLine();
                             encryptionManager.EncryptSensitiveFiles(mainDirectory, password);
                         break;
+
                         case Menu.DecryptFiles:
                             Console.Clear();
-                            EncryptionManager decryptionManager = new EncryptionManager();
                             Console.WriteLine("You selected Decrypt Files");
                             Console.WriteLine("Please give me a password for decryption:");
                             string decryptPassword = Console.ReadLine();
                             decryptionManager.DecryptSensitiveFiles(mainDirectory, decryptPassword);
                         break;
+
                         case Menu.CategorizeFiles:
                             Console.Clear();
                             Console.WriteLine("You selected Categorize Files");
-                            CategoryFileProcessor categoryFileProcessor = new CategoryFileProcessor();
-
                             foreach (var file in Directory.GetFiles(mainDirectory))
                             {
                                 categoryFileProcessor.ProcessFile(file);
                             }
 
                             Console.WriteLine("Files have been categorized.");
-                            break;
-
+                        break;
 
                         case Menu.Exit:
                             Console.WriteLine("Goodbye");
