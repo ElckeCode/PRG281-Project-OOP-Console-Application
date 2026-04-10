@@ -1,0 +1,82 @@
+# Secure File Organizer (SFO)  
+**C# Console Application – Directory Monitoring & Secure File Management System**
+
+## Project Overview
+**Secure File Organizer (SFO)** is a fully functional C# console application developed as the final project for **PRG2781** (2025).  
+
+It solves a **real-world business problem**:  
+Organizations often struggle with chaotic shared directories where files are misplaced, duplicates waste storage, sensitive documents remain unencrypted, and manual file handling is slow and error-prone.  
+
+SFO **automatically monitors a directory**, processes incoming files in real time, categorizes them, detects and handles duplicates, encrypts sensitive files, logs every action, and notifies the user through custom events — all while running efficiently using multiple threads.
+
+This application demonstrates **every required learning outcome** from the module and was built to the exact specifications of Milestone 1 (planning) and Milestone 2 (implementation).
+
+---
+
+## ✨ Key Features
+- Real-time directory monitoring using `FileSystemWatcher`
+- Automatic file categorization based on file type/extension
+- Intelligent duplicate detection and management
+- Automatic encryption of sensitive files
+- Multi-threaded file processing for high performance
+- Custom events and delegates for file-processed notifications
+- Comprehensive logging of all activities
+- Robust security and exception handling
+- Fully configurable via `App.config`
+
+---
+
+## 🛠️ Concepts Demonstrated
+- **Classes and Objects**: Used across all .cs files to build the core OOP architecture of the entire application.
+- **Custom Threads**: Implemented in `ThreadManager.cs` to enable parallel and efficient file processing without blocking the main thread.
+- **Custom Events and Delegates**: Created in `FileProcessedEventArgs.cs` and used in `WatcherService.cs` to send real-time notifications whenever a file is fully processed.
+- **Interfaces (both custom and built-in)**: `IFileProcessor.cs` defines a custom interface that all file processors must follow, ensuring clean and flexible design.
+- **Polymorphism**: Achieved through `CategoryFileProcessor.cs` where multiple processor classes implement the same interface and behave differently based on file type.
+- **Custom and Built-in Exceptions**: `SensitiveFileException.cs` is a custom exception thrown when sensitive files are mishandled, combined with built-in exceptions for robust error handling.
+- **Security Measures**: Handled entirely by `EncryptionManager.cs` using AES encryption to automatically protect sensitive documents.
+
+Additional supporting classes include:  
+- `FileHandler.cs` – Core file operations  
+- `DuplicateManager.cs` – Duplicate detection and resolution  
+- `Logger.cs` – Centralized logging  
+- `WatcherService.cs` – Directory monitoring service  
+- `Program.cs` – Application entry point  
+
+---
+
+## 📁 Project Structure
+SFO_Class_Divided/
+├── Properties/
+├── App.config                  ← Configuration (watch folder, encryption keys, etc.)
+├── CategoryFileProcessor.cs
+├── DuplicateManager.cs
+├── EncryptionManager.cs
+├── FileHandler.cs
+├── FileProcessedEventArgs.cs
+├── IFileProcessor.cs
+├── Logger.cs
+├── Program.cs
+├── SensitiveFileException.cs
+├── ThreadManager.cs
+├── WatcherService.cs
+├── SFO_CLass_Divided.csproj
+├── SFO_Class_Divided.sln
+├── .gitignore
+├── .gitattributes
+└── README.md                   ← You are here
+
+---
+
+## 🚀 How to Run
+1. Open `SFO_Class_Divided.sln` in **Visual Studio 2022** (or later).  
+2. (Optional) Update the watch directory and settings in `App.config`.  
+3. Build the solution (`Ctrl + Shift + B`).  
+4. Run the application (`F5`).  
+5. Place test files in the monitored directory and watch the magic happen!
+
+---
+
+**Thank you for reviewing our project!**  
+We look forward to demonstrating how SFO brings order, security, and efficiency to file management using clean, professional C# code.  
+
+*Prepared by Elcke Van Der Berg & Armand Johannes Vermeulen*
